@@ -89,3 +89,29 @@ resource "aws_security_group" "instance" {
         Name = "ec2-instance-sg"
     }
 }
+
+resource "aws_security_group" "database" {
+    provider = aws.aws
+    name = "Database Security Group"
+    description = "Security group for database"
+    vpc_id = module.vpc.vpc_id
+
+    ingress {
+        description = "PostgreSQL access"
+        from_port = 5432
+        to_port = 5432
+        protocol = "tcp"
+        security_groups = [aws_security_group.instance.id]
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "database-instance-sg"
+    }
+}

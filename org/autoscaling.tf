@@ -18,7 +18,7 @@ resource "aws_launch_configuration" "this" {
 resource "aws_autoscaling_group" "this" {
     provider = aws.aws
     name = "custom-autoscaling-group"
-    vpc_zone_identifier = keys(module.vpc.vpc_private_subnets)
+    vpc_zone_identifier = keys(module.vpc.vpc_app_subnets)
     launch_configuration = aws_launch_configuration.this.name
     min_size = 2
     max_size = 5

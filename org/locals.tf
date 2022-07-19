@@ -12,8 +12,14 @@ locals {
 		}
 
 		private_subnets = {
-			"us-east-1a" = 3
-			"us-east-1b" = 4
+			application = {
+				"us-east-1a" = 3
+				"us-east-1b" = 4
+			}
+			data = {
+				"us-east-1a" = 5
+				"us-east-1b" = 6
+			}
 		}
 	}
 

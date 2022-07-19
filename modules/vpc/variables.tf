@@ -14,7 +14,7 @@ variable "public_subnet_numbers" {
 }
 
 variable "private_subnet_numbers" {
-    type            = map(number)
+    # type            = map()
     description     = "Map of AZ to a number that should be used for private subnets"
     default         = {
         "us-east-1a" = 3
