@@ -44,6 +44,36 @@ resource "aws_security_group" "elb" {
   }
 }
 
+resource "aws_security_group" "bastion_host" {
+    provider    = aws.aws
+    vpc_id     = module.vpc.vpc_id
+    name        = "bastion-sg"
+    description = "Custom Bastion Host Security Group"
+
+    # Inbound Rules
+    # SSH access from anywhere
+    ingress {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    # Outbound Rules
+    # Internet access to anywhere
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "bastion-sg"
+    }
+}
+
+
 # Instance Security Group
 resource "aws_security_group" "instance" {
   provider    = aws.aws
@@ -68,12 +98,12 @@ resource "aws_security_group" "instance" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # SSH access from anywhere
+  # SSH access from bastion host
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.bastion_host.id]
   }
 
   # Outbound Rules
@@ -103,6 +133,14 @@ resource "aws_security_group" "database" {
         protocol = "tcp"
         security_groups = [aws_security_group.instance.id]
     }
+
+    # SSH access from bastion host
+    # ingress {
+    #     from_port   = 22
+    #     to_port     = 22
+    #     protocol    = "tcp"
+    #     security_groups = [aws_security_group.bastion_host.id]
+    # }
 
     egress {
         from_port = 0

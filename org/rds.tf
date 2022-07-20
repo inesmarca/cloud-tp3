@@ -20,6 +20,5 @@ resource "aws_db_instance" "database-instance" {
     username                = "postgres"
     password                = "postgres"
     db_subnet_group_name    = aws_db_subnet_group.this.name
-    # multi_az                = true
     vpc_security_group_ids  = [aws_security_group.database.id]
 }

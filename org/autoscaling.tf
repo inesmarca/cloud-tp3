@@ -4,6 +4,7 @@ resource "aws_launch_configuration" "this" {
   name_prefix   = "custom-launch-configuration-"
   image_id      = data.aws_ami.ubuntu.id
   instance_type = local.ec2.instance_type
+  key_name      = aws_key_pair.generated_key.key_name
 
   security_groups = [aws_security_group.instance.id]
 
