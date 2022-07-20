@@ -51,7 +51,7 @@ server {
     }
 }
 " > /etc/nginx/sites-available/default
-
+sudo systemctl restart nginx
 
 echo 'Hola Hello World... EC2 working!!!' > /var/www/html/index.html
 echo 'Error Hello World... EC2 working!!!' > /var/www/html/error.html
