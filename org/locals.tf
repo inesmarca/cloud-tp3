@@ -24,15 +24,17 @@ locals {
 	}
 
   # S3
-  bucket_name = "bucketgrupo6-tp-itba-cloud-computing"
+  bucket_name = "bucketgrupo6monjeau22-tp-itba-cloud-computing"
   path        = "../resources"
 
   s3 = {
 
     # 1 - Website
     website = {
-      bucket_name = local.bucket_name
+      bucket_name = local.bucket_name,
+      bucket_redirect = false
       path        = "../resources"
+      index_file         = "index.html"
 
       objects = {
         error = {
@@ -50,12 +52,14 @@ locals {
 
     # 2 - WWW Website
     www-website = {
-      bucket_name = "www.${local.bucket_name}"
+      bucket_name = "www.${local.bucket_name}",
+      redirect_hostname = "${local.bucket_name}.s3-website-us-east-1.amazonaws.com"
+
     }
 
     #Logs 
     logs = {
-      bucket_name = "logs.${local.bucket_name}"
+      bucket_name = "logs.${local.bucket_name}",
     }
 
 

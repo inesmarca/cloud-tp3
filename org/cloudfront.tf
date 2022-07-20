@@ -3,9 +3,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   provider = aws.aws
 
   # S3 bucket
-  origin {
+   origin {
     origin_id   = module.s3["website"].id
-    domain_name = module.s3["website"].website_endpoint
+    domain_name = module.s3["www-website"].website_endpoint
 
     custom_origin_config {
       http_port              = "80"
@@ -15,8 +15,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
 
     #   s3_origin_config {
-    #       origin_access_identity = "origin-access-identity/cloudfront/${module.s3["website"].oai.id}"
-    #   }
+   #        origin_access_identity = "origin-access-identity/cloudfront/${module.s3["website"].oai.id}"
+   #    }
   }
 
   # Load Balancer (APP)
@@ -48,7 +48,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = module.s3["website"].id
-
     forwarded_values {
       query_string = false
 

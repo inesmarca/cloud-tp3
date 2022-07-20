@@ -22,16 +22,37 @@ resource "aws_s3_bucket_policy" "this" {
 
 # 3 -Website configuration
 resource "aws_s3_bucket_website_configuration" "this" {
+  count  = var.index_file != null || var.redirect_hostname != null ? 1 : 0
+
   bucket = aws_s3_bucket.this.id
 
-  index_document {
-    suffix = "index.html"
+  dynamic "index_document" {
+    for_each = var.index_file != null ? [1] : []
+    # count = var.index_file != null ? 1: 0
+    content {
+      suffix = var.index_file
+    }
   }
 
-  error_document {
-    key = "error.html"
+  dynamic "error_document" {
+    for_each = var.index_file != null ? [1] : []
+    # count = var.index_file != null ? 1: 0
+    content {
+      key = "error.html"
+    }
   }
+
+    dynamic "redirect_all_requests_to" {
+    for_each = var.redirect_hostname != null ? [1] : []
+    # count = var.redirect_hostname != null ? 1: 0
+    content {
+      host_name = var.redirect_hostname
+    }
+  }
+
 }
+
+
 
 # 4 - Access Control List
 resource "aws_s3_bucket_acl" "this" {
