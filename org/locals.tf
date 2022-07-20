@@ -59,6 +59,12 @@ locals {
     }
 
 
+    #Lex logs
+    lex-logs = {
+      bucket_name = "lex-logs.${local.bucket_name}"
+    }
+
+
 
 
   }
